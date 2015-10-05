@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "CRingBuffer.h"
 
 CRingBuffer::CRingBuffer(int bufferSize)

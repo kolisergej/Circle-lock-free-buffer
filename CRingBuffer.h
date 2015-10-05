@@ -1,7 +1,6 @@
 #ifndef CRINGBUFFER_H
 #define CRINGBUFFER_H
 
-
 class CRingBuffer
 {
 public:
