@@ -11,17 +11,19 @@ using std::thread;
 using std::cout;
 using std::endl;
 
-volatile bool flag = true;
+bool flag = true;
 
 void inserter(const string& fileName, CRingBuffer& ringBuffer)
 {
     ifstream input(fileName, ifstream::in);
     string inputString;
-    getline(input, inputString, ';');
     while (!input.eof())
     {
         std::getline(input, inputString, ';');
-        ringBuffer.push_back(atof(inputString.c_str()));
+        if (!inputString.empty())
+        {
+            ringBuffer.push_back(atof(inputString.c_str()));
+        }
     }
     input.close();
     flag = false;
@@ -29,10 +31,13 @@ void inserter(const string& fileName, CRingBuffer& ringBuffer)
 
 void remover(CRingBuffer& ringBuffer)
 {
+    float digit;
     while (flag)
     {
-//        cout << flag;
-        cout << ringBuffer.pop_front() << " ";
+        if (ringBuffer.read(digit))
+        {
+            cout << digit << " ";
+        }
     }
 }
 

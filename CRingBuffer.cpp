@@ -20,16 +20,8 @@ void CRingBuffer::push_back(const float& digit)
     while (!write(digit)) {}
 }
 
-float CRingBuffer::pop_front()
-{
-    float digit;
-    while(!read(digit)){}
-    return digit;
-}
-
 bool CRingBuffer::read(float& digit)
 {
-    std::cout << 1;
     const unsigned int writePos = m_writeAbsolutePosition % m_bufferSize;
     const unsigned int readPos = m_readAbsolutePosition % m_bufferSize;
 
@@ -53,7 +45,6 @@ bool CRingBuffer::read(float& digit)
 
 bool CRingBuffer::write(const float& digit)
 {
-    std::cout << 2;
     const unsigned int writePos = m_writeAbsolutePosition % m_bufferSize;
     const unsigned int readPos = m_readAbsolutePosition % m_bufferSize;
     bool canWrite = false;

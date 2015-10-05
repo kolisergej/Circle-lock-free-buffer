@@ -9,10 +9,9 @@ public:
     ~CRingBuffer();
 
     void push_back(const float& digit);
-    float pop_front();
+    bool read(float& digit);
 
 private:
-    bool read(float& digit);
     bool write(const float& digit);
 
     unsigned long m_readAbsolutePosition;
