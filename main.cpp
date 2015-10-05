@@ -14,9 +14,7 @@ using std::thread;
 using std::cout;
 using std::endl;
 
-bool flag = true;
-
-void inserter(const string& fileName, CRingBuffer& ringBuffer)
+void inserter(const string& fileName, CRingBuffer& ringBuffer, bool& isInserterRunning)
 {
     ifstream input(fileName, ifstream::in);
     string inputString;
@@ -29,13 +27,13 @@ void inserter(const string& fileName, CRingBuffer& ringBuffer)
         }
     }
     input.close();
-    flag = false;
+    isInserterRunning = false;
 }
 
-void remover(set<float>& output, CRingBuffer& ringBuffer)
+void remover(set<float>& output, CRingBuffer& ringBuffer, bool& isInserterRunning)
 {
     float digit;
-    while (flag)
+    while (isInserterRunning)
     {
         if (ringBuffer.read(digit))
         {
@@ -51,14 +49,15 @@ int main(int argc, char* argv[])
         set<float> output;
         CRingBuffer ringBuffer(10);
 
-        const std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
-        thread insertThread(inserter, argv[1], std::ref(ringBuffer));
-        thread removeThread(remover, std::ref(output), std::ref(ringBuffer));
+        bool isInserterRunning = true;
+        const auto start = std::chrono::high_resolution_clock::now();
+        thread insertThread(inserter, argv[1], std::ref(ringBuffer), std::ref(isInserterRunning));
+        thread removeThread(remover, std::ref(output), std::ref(ringBuffer), std::ref(isInserterRunning));
         insertThread.join();
         removeThread.join();
-        const std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
+        const auto end = std::chrono::high_resolution_clock::now();
 
-        cout << "Analyse time: " << (end-start).count() << " ms" << endl;
+        cout << "Analyse time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms\n";
 
         cout << "Result: ";
         for (auto digit : output)
