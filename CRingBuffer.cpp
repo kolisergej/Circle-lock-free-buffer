@@ -41,6 +41,11 @@ bool CRingBuffer::read(float& digit)
     return canRead;
 }
 
+bool CRingBuffer::isEmptyAfterWriterWork() const
+{
+    return m_readAbsolutePosition == m_writeAbsolutePosition;
+}
+
 bool CRingBuffer::write(const float& digit)
 {
     const unsigned int writePos = m_writeAbsolutePosition % m_bufferSize;

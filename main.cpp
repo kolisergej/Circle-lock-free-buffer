@@ -40,6 +40,14 @@ void remover(set<float>& output, CRingBuffer& ringBuffer, bool& isInserterRunnin
             output.insert(digit);
         }
     }
+
+    while (!ringBuffer.isEmptyAfterWriterWork())
+    {
+        if (ringBuffer.read(digit))
+        {
+            output.insert(digit);
+        }
+    }
 }
 
 int main(int argc, char* argv[])
@@ -64,6 +72,7 @@ int main(int argc, char* argv[])
         {
             cout << digit << " ";
         }
+        cout << endl;
     }
     else
     {

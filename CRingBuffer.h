@@ -9,6 +9,7 @@ public:
 
     void push_back(const float& digit);
     bool read(float& digit);
+    bool isEmptyAfterWriterWork() const;
 
 private:
     bool write(const float& digit);
